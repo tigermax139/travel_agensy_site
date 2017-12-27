@@ -1,0 +1,24 @@
+{
+  "name": "travel_agensy_site",
+  "version": "1.0.0",
+  "description": "Сайт по финальному заданию, компании EPAM. Тема \"Тур оператор\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tigermax139/travel_agensy_site.git"
+  },
+  "keywords": [
+    "travel",
+    "EPAM",
+    "task"
+  ],
+  "author": "Bohdan Yurchuk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tigermax139/travel_agensy_site/issues"
+  },
+  "homepage": "https://github.com/tigermax139/travel_agensy_site#readme"
+}
