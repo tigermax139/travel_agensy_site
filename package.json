@@ -20,5 +20,14 @@
   "bugs": {
     "url": "https://github.com/tigermax139/travel_agensy_site/issues"
   },
-  "homepage": "https://github.com/tigermax139/travel_agensy_site#readme"
+  "homepage": "https://github.com/tigermax139/travel_agensy_site#readme",
+  "devDependencies": {
+    "browser-sync": "^2.21.0",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-pug": "^3.3.0",
+    "gulp-sass": "^3.1.0",
+    "gulp.spritesmith": "^6.7.0",
+    "rimraf": "^2.6.2"
+  },
+  "dependencies": {}
 }
