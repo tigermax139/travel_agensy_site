@@ -4,9 +4,11 @@ const pug = require('gulp-pug');
 const sass = require('gulp-sass');
 const spritesmith = require("gulp.spritesmith");
 const rimraf = require('rimraf');
+const rename = require('gulp-rename');
 
-
-/************ STATIC SERVER ************/
+/****************************************************************/
+/************************ STATIC SERVER ************************/
+/**************************************************************/
 gulp.task('browser-sync', function() {
     browserSync.init({
         server: {
@@ -18,7 +20,9 @@ gulp.task('browser-sync', function() {
 
 gulp.watch('build/**/*').on('change', browserSync.reload);
 
-/************ TEMPLATES COMPILE ************/
+/****************************************************************/
+/************************ TEMPLATES COMPILE ********************/
+/**************************************************************/
 gulp.task('template:compile', function buildHTML() {
     return gulp.src('source/template/index.pug')
         .pipe(pug({
@@ -27,14 +31,20 @@ gulp.task('template:compile', function buildHTML() {
         .pipe(gulp.dest('build'))
 });
 
-/************ STYLE COMPILE ************/
+/****************************************************************/
+/************************ STYLE COMPILE ************************/
+/**************************************************************/
 gulp.task('style:compile', function () {
     return gulp.src('source/css/main.scss')
-        .pipe(sass().on('error', sass.logError))
+        .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+        .pipe(rename('main.min.scss'))
         .pipe(gulp.dest('build/style'));
 });
 
-/************ SPRITES      ************/
+
+/**********************************************************/
+/************************ SPRITES ************************/
+/********************************************************/
 gulp.task('sprite', function () {
     const spriteData = gulp.src('source/img/icons/*.png').pipe(spritesmith({
         imgName: 'sprite.png',
@@ -43,31 +53,46 @@ gulp.task('sprite', function () {
     }));
 
     spriteData.img.pipe(gulp.dest('build/img'));
-    spriteData.css.pipe(gulp.dest('./source/css/global'));
+    spriteData.css.pipe(gulp.dest('source/css/global'));
     cb();
 });
 
-/************ GULP CLEAN ************/
+
+/*************************************************************/
+/************************ GULP CLEAN ************************/
+/***********************************************************/
 gulp.task('clean', function del(cb) {
    return rimraf('build', cb);
 });
 
-/************ FONTS COPY ************/
+
+/*************************************************************/
+/************************ FONTS COPY ************************/
+/***********************************************************/
 gulp.task('copy:fonts', () => {
-    return gulp.src('./source/fonts/**/*.*')
+    return gulp.src('source/fonts/**/*.*')
         .pipe(gulp.dest('build/fonts'));
 });
 
-/************ IMG COPY   ************/
+
+/***********************************************************/
+/************************ IMG COPY ************************/
+/*********************************************************/
 gulp.task('copy:img', () => {
     return gulp.src('./source/img/**/*.*')
         .pipe(gulp.dest('build/img'));
 });
 
-/************ GULP COPY   ************/
+
+/**************************************************************/
+/************************ GULP COPY   ************************/
+/************************************************************/
 gulp.task('copy', gulp.parallel('copy:fonts','copy:img'));
 
-/************ WATCHERS  ************/
+
+/************************************************************/
+/************************ WATCHERS  ************************/
+/**********************************************************/
 gulp.watch('source/template/**/*.pug', gulp.series('template:compile'));
 gulp.watch('source/style/**/*.scss', gulp.series('style:compile'));
 
