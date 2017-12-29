@@ -5,6 +5,8 @@ const sass = require('gulp-sass');
 const spritesmith = require("gulp.spritesmith");
 const rimraf = require('rimraf');
 const rename = require('gulp-rename');
+const autoprefixer = require('gulp-autoprefixer');
+const sourcemaps = require('gulp-sourcemaps');
 
 /****************************************************************/
 /************************ STATIC SERVER ************************/
@@ -36,9 +38,15 @@ gulp.task('template:compile', function buildHTML() {
 /**************************************************************/
 gulp.task('style:compile', function () {
     return gulp.src('source/css/main.scss')
+        .pipe(sourcemaps.init())
         .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
-        .pipe(rename('main.min.scss'))
-        .pipe(gulp.dest('build/style'));
+        .pipe(autoprefixer({
+            browsers: ['last 10 versions'],
+            cascade: false
+        }))
+        .pipe(rename('main.min.css'))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('build/style'))
 });
 
 
@@ -95,6 +103,7 @@ gulp.task('copy', gulp.parallel('copy:fonts','copy:img'));
 /**********************************************************/
 gulp.watch('source/template/**/*.pug', gulp.series('template:compile'));
 gulp.watch('source/style/**/*.scss', gulp.series('style:compile'));
+
 
 gulp.task('default', gulp.series(
    'clean',
