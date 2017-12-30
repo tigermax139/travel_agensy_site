@@ -11,7 +11,7 @@ const sourcemaps = require('gulp-sourcemaps');
 /****************************************************************/
 /************************ STATIC SERVER ************************/
 /**************************************************************/
-gulp.task('browser-sync', function() {
+gulp.task('server', function() {
     browserSync.init({
         server: {
             port: 9000,
@@ -65,14 +65,12 @@ gulp.task('sprite', function () {
     cb();
 });
 
-
 /*************************************************************/
 /************************ GULP CLEAN ************************/
 /***********************************************************/
 gulp.task('clean', function del(cb) {
    return rimraf('build', cb);
 });
-
 
 /*************************************************************/
 /************************ FONTS COPY ************************/
@@ -82,7 +80,6 @@ gulp.task('copy:fonts', () => {
         .pipe(gulp.dest('build/fonts'));
 });
 
-
 /***********************************************************/
 /************************ IMG COPY ************************/
 /*********************************************************/
@@ -90,7 +87,6 @@ gulp.task('copy:img', () => {
     return gulp.src('./source/img/**/*.*')
         .pipe(gulp.dest('build/img'));
 });
-
 
 /**************************************************************/
 /************************ GULP COPY   ************************/
@@ -101,13 +97,14 @@ gulp.task('copy', gulp.parallel('copy:fonts','copy:img'));
 /************************************************************/
 /************************ WATCHERS  ************************/
 /**********************************************************/
-gulp.watch('source/template/**/*.pug', gulp.series('template:compile'));
-gulp.watch('source/style/**/*.scss', gulp.series('style:compile'));
-
+gulp.task('watch', function() {
+    gulp.watch('source/template/**/*.pug', gulp.series('templates:compile'));
+    gulp.watch('source/css/**/*.scss', gulp.series('styles:compile'));
+});
 
 gulp.task('default', gulp.series(
    'clean',
-    gulp.parallel('template:compile','style:compile','sprite','copy'),
+    gulp.parallel('template:compile','style:compile','copy'),
     gulp.parallel('watch', 'server')
     )
 );
