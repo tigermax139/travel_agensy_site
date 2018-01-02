@@ -1,2 +1,13 @@
-@import "../../node_modules/normalizecss/normalize.css";
-@import "../../node_modules/font-awesome/scss/font-awesome";
+//@import "../../node_modules/normalizecss/normalize.css";
+//@import "../../node_modules/font-awesome/scss/font-awesome";
+.container {
+  max-width: 960px;
+  padding: 0 10px;
+  margin: 0 auto;
+}
+
+header {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+}

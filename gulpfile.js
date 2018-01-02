@@ -18,19 +18,20 @@ gulp.task('server', function() {
             baseDir: "build"
         }
     });
+    gulp.watch('source/**/*').on('change', browserSync.reload);
 });
 
-gulp.watch('build/**/*').on('change', browserSync.reload);
+
 
 /****************************************************************/
 /************************ TEMPLATES COMPILE ********************/
 /**************************************************************/
 gulp.task('template:compile', function buildHTML() {
-    return gulp.src('source/template/index.pug')
+    return gulp.src('source/template/general/*.pug')
         .pipe(pug({
             pretty: true
         }))
-        .pipe(gulp.dest('build'))
+        .pipe(gulp.dest('build/template'))
 });
 
 /****************************************************************/
@@ -39,16 +40,17 @@ gulp.task('template:compile', function buildHTML() {
 gulp.task('style:compile', function () {
     return gulp.src('source/css/main.scss')
         .pipe(sourcemaps.init())
-        .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+        .pipe(sass().on('error', sass.logError))
         .pipe(autoprefixer({
-            browsers: ['last 10 versions'],
-            cascade: false
+            cascade: false,
+            browsers: 'last 5 versions'
         }))
         .pipe(rename('main.min.css'))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('build/style'))
 });
 
+//{outputStyle: 'compressed'}
 
 /**********************************************************/
 /************************ SPRITES ************************/
@@ -93,18 +95,17 @@ gulp.task('copy:img', () => {
 /************************************************************/
 gulp.task('copy', gulp.parallel('copy:fonts','copy:img'));
 
-
 /************************************************************/
 /************************ WATCHERS  ************************/
 /**********************************************************/
 gulp.task('watch', function() {
-    gulp.watch('source/template/**/*.pug', gulp.series('templates:compile'));
-    gulp.watch('source/css/**/*.scss', gulp.series('styles:compile'));
+    gulp.watch('source/template/**/*.pug', gulp.series('template:compile'));
+    gulp.watch('source/css/**/*.scss', gulp.series('style:compile'));
 });
 
 gulp.task('default', gulp.series(
    'clean',
     gulp.parallel('template:compile','style:compile','copy'),
-    gulp.parallel('watch', 'server')
+    gulp.parallel('server', 'watch')
     )
 );

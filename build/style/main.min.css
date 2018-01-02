@@ -1,0 +1,11 @@
+.container {
+  max-width: 960px;
+  padding: 0 10px;
+  margin: 0 auto; }
+
+header {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white; }
+
+/*# sourceMappingURL=main.min.css.map */
